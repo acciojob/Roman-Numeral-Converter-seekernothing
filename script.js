@@ -10,6 +10,38 @@ function convertToRoman(num) {
     };
 
   //your code here
+	let result = '';
+    let remaining = num;
+    
+    // Iterate through the symbols from largest to smallest
+    for(let i = 0; i < Object.keys(obj).length - 1; i++) {
+        const currentSymbol = obj[i][0];
+        const currentValue = obj[i][1];
+        const nextSymbol = obj[i + 1][0];
+        const nextValue = obj[i + 1][1];
+        
+        // Handle subtractive notation
+        if (remaining >= currentValue) {
+            const count = Math.floor(remaining / currentValue);
+            result += currentSymbol.repeat(count);
+            remaining = remaining % currentValue;
+        }
+        
+        // Check for subtractive combinations (like IV, IX, XL, etc.)
+        const subtractiveValue = currentValue - nextValue;
+        if (remaining >= subtractiveValue && 
+            currentValue / nextValue <= 10) { // Only valid for certain combinations
+            result += nextSymbol + currentSymbol;
+            remaining -= subtractiveValue;
+        }
+    }
+    
+    // Handle remaining ones
+    if (remaining > 0) {
+        result += obj[6][0].repeat(remaining);
+    }
+    
+    return result;
 
 }
 // You can test your code by running the above function and printing it to console by pressing the run button at the top. To run it with input 36, uncomment the following line
